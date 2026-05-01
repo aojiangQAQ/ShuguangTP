@@ -1,0 +1,77 @@
+# ============================================================
+#   ShuguangTP - 曙光团队出品 收费传送插件
+#   作者: 鳌江  |  版本: 1.0.0
+# ============================================================
+
+# ---------- 费率设置 ----------
+cost:
+  # 每格距离的基础费用（金币）
+  per-block: 0.05
+
+  # 跨维度倍率（主世界 <-> 地狱 <-> 末地）
+  cross-dimension-multiplier: 3.0
+
+  # 最低收费（无论距离多近都至少收取）
+  minimum: 1.0
+
+  # 最高收费上限（0 = 不限制）
+  maximum: 500.0
+
+  # 传送到坐标额外附加费
+  extra-coord: 0.0
+
+  # 传送到 home 额外附加费
+  extra-home: 0.0
+
+  # 传送到玩家额外附加费
+  extra-player: 0.0
+
+# ---------- 超时设置 ----------
+timeout:
+  # 玩家 TP 请求超时时间（秒），超时自动拒绝
+  request-expire: 30
+
+# ---------- 传送延迟 ----------
+teleport:
+  # 扣费后延迟多少秒才实际传送（0 = 立即）
+  # 延迟期间若玩家移动则取消传送
+  delay: 3
+  # 是否在延迟期间检测移动取消
+  cancel-on-move: true
+
+# ---------- Home 兼容 ----------
+home:
+  # home 数据来源: essentials / cmi / builtin
+  # builtin = 本插件自带简易 home（存 config/homes.yml）
+  provider: essentials
+
+# ---------- 经济插件 ----------
+economy:
+  # Vault 会自动检测已安装的经济插件，此处无需额外配置
+  # 若需调试，可设 debug: true
+  debug: false
+
+# ---------- 消息（支持 & 颜色码） ----------
+messages:
+  prefix: "&8[&b曙光传送&8] "
+  no-permission: "&c你没有权限执行此命令。"
+  player-not-found: "&c找不到玩家 &e{player}&c。"
+  not-enough-money: "&c余额不足！此次传送需要 &e{cost}&c 金币，你当前拥有 &e{balance}&c 金币。"
+  charge-success: "&a已扣除 &e{cost}&a 金币。当前余额：&e{balance}&a。"
+  teleport-start: "&b将在 &e{delay}&b 秒后传送，请勿移动..."
+  teleport-cancelled: "&c传送已取消（你移动了）。"
+  teleport-success: "&a传送成功！"
+  request-sent: "&a已向 &e{player}&a 发送传送请求，等待对方同意（{timeout}秒后超时）。"
+  request-received: "&e玩家 &b{player}&e 请求传送到你身边，费用 &b{cost}&e 金币。\n  &a[/stpaccept 同意]  &c[/stpdeny 拒绝]"
+  request-accepted: "&a&e{player}&a 同意了你的传送请求。"
+  request-denied: "&c&e{player}&c 拒绝了你的传送请求。"
+  request-expired: "&c传送请求已超时。"
+  request-none: "&c你当前没有待处理的传送请求。"
+  cost-info: "&b此次传送费用预估：&e{cost}&b 金币（距离 &e{distance}&b 格{dimension_tip}）。"
+  dimension-tip-cross: "&c（跨维度 x{multiplier}）"
+  dimension-tip-same: ""
+  free-teleport: "&a（管理员/免费权限，本次传送免费）"
+  home-not-found: "&c找不到 home &e{home}&c，请检查名称或使用 Essentials 设置 home。"
+  coord-invalid: "&c坐标参数无效，请输入数字。"
+  world-not-found: "&c找不到世界 &e{world}&c。"
+  reloaded: "&a配置已重载。"

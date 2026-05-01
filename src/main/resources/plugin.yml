@@ -1,0 +1,46 @@
+name: ShuguangTP
+version: 1.0.0
+main: cn.shuguang.shuguangtp.ShuguangTP
+api-version: 1.16
+authors: [鳌江]
+description: 曙光团队出品 — 距离收费传送插件
+website: https://aojiang.space
+depend: [Vault]
+softdepend: [Essentials, CMI]
+
+commands:
+  stp:
+    description: 传送到坐标
+    usage: /stp <x> <y> <z> [world]
+    aliases: [stpcoord]
+  stpp:
+    description: 向玩家发起传送请求
+    usage: /stpp <玩家名>
+    aliases: [stpplayer]
+  stph:
+    description: 传送到 home
+    usage: /stph [home名称]
+    aliases: [stphome]
+  stpaccept:
+    description: 同意传送请求
+    usage: /stpaccept
+    aliases: [stpa]
+  stpdeny:
+    description: 拒绝传送请求
+    usage: /stpdeny
+    aliases: [stpd]
+  stpreload:
+    description: 重载 ShuguangTP 配置
+    usage: /stpreload
+    permission: shuguangtp.admin
+
+permissions:
+  shuguangtp.use:
+    description: 使用所有传送命令
+    default: true
+  shuguangtp.admin:
+    description: 管理员权限（重载、免费传送）
+    default: op
+  shuguangtp.free:
+    description: 免费传送（不扣费）
+    default: false
