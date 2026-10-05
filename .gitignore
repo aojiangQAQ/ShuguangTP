@@ -24,3 +24,12 @@ Thumbs.db
 
 # Maven wrapper
 .mvn/wrapper/maven-wrapper.jar
+
+# Local credentials and server data
+.env
+.env.*
+!.env.example
+/settings.xml
+/plugins/
+/logs/
+/homes.yml

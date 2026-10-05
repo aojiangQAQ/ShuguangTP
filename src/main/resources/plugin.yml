@@ -2,7 +2,7 @@ name: ShuguangTP
 version: 1.0.0
 main: cn.shuguang.shuguangtp.ShuguangTP
 api-version: 1.16
-authors: [鳌江]
+authors: [aojiangQAQ（鳌江）]
 description: 曙光团队出品 — 距离收费传送插件
 website: https://aojiang.space
 depend: [Vault]

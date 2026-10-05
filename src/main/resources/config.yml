@@ -1,6 +1,6 @@
 # ============================================================
 #   ShuguangTP - 曙光团队出品 收费传送插件
-#   作者: 鳌江  |  版本: 1.0.0
+#   作者: aojiangQAQ（鳌江）  |  版本: 1.0.0
 # ============================================================
 
 # ---------- 费率设置 ----------
@@ -41,8 +41,9 @@ teleport:
 
 # ---------- Home 兼容 ----------
 home:
-  # home 数据来源: essentials / cmi / builtin
-  # builtin = 本插件自带简易 home（存 config/homes.yml）
+  # home 数据来源: essentials / builtin
+  # builtin 从插件数据目录下的 homes.yml 读取 home
+  # 本插件不注册设置或删除 home 的命令
   provider: essentials
 
 # ---------- 经济插件 ----------

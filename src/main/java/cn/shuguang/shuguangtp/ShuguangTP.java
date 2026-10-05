@@ -10,7 +10,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 /**
  * ShuguangTP 主类
- * 曙光团队出品，作者：鳌江
+ * 曙光团队，作者：aojiangQAQ（鳌江）。
  */
 public class ShuguangTP extends JavaPlugin {
 
@@ -23,10 +23,8 @@ public class ShuguangTP extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
-        // 保存默认配置
         saveDefaultConfig();
 
-        // 初始化工具类
         MessageUtil.init(this);
 
         // 初始化经济
@@ -43,7 +41,6 @@ public class ShuguangTP extends JavaPlugin {
         // 初始化请求管理器
         requestManager = new RequestManager(this);
 
-        // 注册命令
         registerCommands();
 
         getLogger().info("========================================");
@@ -93,7 +90,6 @@ public class ShuguangTP extends JavaPlugin {
         homeProvider = HomeProviderFactory.create(this);
     }
 
-    // ---- Getters ----
     public static ShuguangTP getInstance() { return instance; }
     public EconomyManager getEconomyManager() { return economyManager; }
     public HomeProvider getHomeProvider() { return homeProvider; }

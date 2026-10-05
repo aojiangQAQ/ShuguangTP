@@ -14,8 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 内置 Home 提供者，将 home 存储在 homes.yml 中
- * 命令：/sethome [name]  /delhome [name]（由本插件扩展提供，此处仅负责读取）
+ * 内置 Home 提供者，按玩家 UUID 从 homes.yml 读写位置。
  */
 public class BuiltinHomeProvider implements HomeProvider {
 
@@ -42,7 +41,7 @@ public class BuiltinHomeProvider implements HomeProvider {
         }
     }
 
-    /** 设置 home（供 /sethome 命令调用） */
+    /** 设置并保存指定 home。 */
     public void setHome(Player player, String name, Location loc) {
         String path = player.getUniqueId() + "." + name;
         homeConfig.set(path + ".world",  loc.getWorld().getName());

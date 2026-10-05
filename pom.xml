@@ -11,6 +11,13 @@
 
     <name>ShuguangTP</name>
     <description>曙光团队出品 — 收费传送插件，适配 Arclight 1.16.5</description>
+    <url>https://github.com/aojiangQAQ/ShuguangTP</url>
+    <developers>
+        <developer>
+            <id>aojiangQAQ</id>
+            <name>鳌江</name>
+        </developer>
+    </developers>
 
     <properties>
         <java.version>11</java.version>
@@ -23,7 +30,7 @@
             <id>spigotmc-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
-        <!-- PaperMC (for paperlib transitive dependency) -->
+        <!-- PaperMC 依赖仓库 -->
         <repository>
             <id>papermc</id>
             <url>https://repo.papermc.io/repository/maven-public/</url>
@@ -79,7 +86,7 @@
                 </configuration>
             </plugin>
 
-            <!-- 打 fat-jar，排除 paper/vault（provided） -->
+            <!-- 打包插件；provided 依赖由服务器提供 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>

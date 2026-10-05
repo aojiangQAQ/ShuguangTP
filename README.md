@@ -1,182 +1,106 @@
-# ShuguangTP — 曙光收费传送插件
+# ShuguangTP
 
-![Minecraft](https://img.shields.io/badge/Minecraft-1.16.5-green)
-![Paper/Arclight](https://img.shields.io/badge/Paper%2FArclight-Compatible-blue)
-![License](https://img.shields.io/badge/license-MIT-blue)
+Minecraft 距离收费传送插件。作者：**aojiangQAQ（鳌江）**，曙光团队。
 
-> **ShuguangTP**（曙光传送）是一个为 Minecraft 服务器设计的收费传送插件。支持坐标传送、玩家互传、Home 传送，按距离智能计费，完美集成 Vault 经济系统，兼容 Arclight 混合核心。
+当前版本为 `1.0.0`，使用 Spigot `1.16.5` API 编译，Java 字节码目标为 `11`。经济接入使用 Vault，Home 可读取 Essentials 数据或内置 YAML 文件。
 
----
+## 功能
 
-## ✨ 功能亮点
+- 指定坐标传送、玩家传送请求与 Home 传送。
+- 根据三维距离、跨世界倍率和传送类型附加费计费。
+- 玩家请求支持同意、拒绝与自动超时；对方同意时重新计算非免费请求的费用。
+- 支持延迟传送；启用移动取消时，在延迟结束时检查玩家是否离开原方块，取消并退款。
+- 管理员或拥有免费权限的玩家可免除费用。
+- 支持配置重载、消息颜色码与变量替换。
 
-- **多种传送方式**  
-  坐标传送 `/stp`、玩家请求传送 `/stpp`、Essentials Home 兼容传送 `/stph`
+## 构建
 
-- **智能距离计费**  
-  按直线距离 × 每格单价计费，跨维度按配置倍率加倍收费
+需要 JDK 11+ 和 Maven。项目依赖由 Maven 仓库提供。
 
-- **传送请求机制**  
-  玩家互传需对方同意，支持超时自动取消
-
-- **传送延迟保护**  
-  可配置延迟秒数，移动即取消并自动退款
-
-- **余额安全检查**  
-  余额不足直接拒绝，不扣费，不产生异常
-
-- **免费权限节点**  
-  拥有 `shuguangtp.free` 权限的玩家可跳过扣费
-
-- **热重载支持**  
-  `/stpreload` 不重启服务器即可生效配置修改
-
-- **Arclight 完美兼容**  
-  纯 Bukkit API 实现，不依赖 NMS，在 Forge + Paper 混合核心下稳定运行
-
----
-
-## 📂 目录结构
-
-```
-ShuguangTP/
-├── pom.xml
-├── README.md
-├── LICENSE
-├── .gitignore
-└── src/
-    └── main/
-        ├── java/
-        │   └── com/shuguangteam/shuguangtp/...
-        └── resources/
-            ├── plugin.yml
-            └── config.yml
-```
-
----
-
-## 🛠 本地构建
-
-确保使用 **JDK 11+** 和 **Maven 3.8+**：
-
-```bash
-# 克隆仓库
+```powershell
 git clone https://github.com/aojiangQAQ/ShuguangTP.git
 cd ShuguangTP
-
-# Maven 打包（跳过测试）
-mvn clean package -DskipTests
-
-# 生成 target/ShuguangTP-1.0.0.jar
+mvn clean package
 ```
 
----
+产物：`target/ShuguangTP-1.0.0.jar`。
 
-## 🚀 安装与配置
+源码位于 `src/main/java/cn/shuguang/shuguangtp/`，插件描述符和默认配置位于 `src/main/resources/`。
 
-### 前置依赖
+## 安装
 
-| 前置插件 | 说明 |
-|--------|------|
-| **Vault** | 必须 |
-| **EssentialsX** / CMI / 其他经济插件 | 提供实际的经济系统 |
-| **Essentials**（可选） | 提供 home 数据读取 |
+1. 准备 Minecraft 1.16.5 Bukkit/Spigot API 服务端，使用 Java 11 或更高版本。
+2. 安装 Vault 和一个注册 Vault Economy 服务的经济插件；需要 Essentials Home 时安装 EssentialsX。
+3. 将 JAR 放入服务器 `plugins/` 目录并重启。
+4. 编辑 `plugins/ShuguangTP/config.yml`，执行 `/stpreload`。
 
-### 安装步骤
+Vault 和经济服务为必需依赖。CMI 可作为 Vault 经济来源，但项目没有 CMI Home 适配器。
 
-1. 确保服务器已安装 **Vault** 及经济插件（如 EssentialsX）
-2. 将 `ShuguangTP-1.0.0.jar` 复制到服务器 `plugins/` 目录
-3. 启动或重启服务器，`plugins/ShuguangTP/config.yml` 自动生成
-4. 根据需要修改费率、消息等配置，执行 `/stpreload` 生效
+## 命令与权限
 
----
+| 命令 | 别名 | 权限 | 说明 |
+| --- | --- | --- | --- |
+| `/stp <x> <y> <z> [世界]` | `/stpcoord` | `shuguangtp.use` | 指定世界的坐标传送，默认当前世界 |
+| `/stpp <在线玩家>` | `/stpplayer` | `shuguangtp.use` | 向玩家发送传送请求 |
+| `/stph [home名]` | `/stphome` | `shuguangtp.use` | 传送至 Home，默认名称 `home` |
+| `/stpaccept` | `/stpa` | 无额外检查 | 同意收到的请求 |
+| `/stpdeny` | `/stpd` | 无额外检查 | 拒绝收到的请求 |
+| `/stpreload` | 无 | `shuguangtp.admin` | 重载配置并重建 Home 提供者 |
 
-## 📝 指令 & 权限
+坐标参数只接受数字，不解析原版命令的 `~` 相对坐标。
 
-| 命令 | 权限 | 说明 |
-|------|------|------|
-| `/stp <x> <y> <z> [世界]` | `shuguangtp.use` | 传送到指定坐标 |
-| `/stpp <玩家名>` | `shuguangtp.use` | 向玩家发起传送请求 |
-| `/stph [home名]` | `shuguangtp.use` | 传送到 Essentials Home |
-| `/stpaccept`（别名 `/stpa`） | `shuguangtp.use` | 同意传送请求 |
-| `/stpdeny`（别名 `/stpd`） | `shuguangtp.use` | 拒绝传送请求 |
-| `/stpreload` | `shuguangtp.admin` | 重载配置 |
+| 权限 | 默认 | 说明 |
+| --- | --- | --- |
+| `shuguangtp.use` | 所有玩家 | 使用坐标、玩家请求与 Home 传送命令 |
+| `shuguangtp.admin` | OP | 重载配置、免费传送 |
+| `shuguangtp.free` | 不授予 | 免费传送 |
 
-### 权限节点
+## 计费
 
-| 节点 | 默认 | 说明 |
-|------|------|------|
-| `shuguangtp.use` | 所有玩家 | 使用传送命令 |
-| `shuguangtp.admin` | OP | 重载命令 + 免费传送 |
-| `shuguangtp.free` | 无 | 免费传送（不扣费） |
+1. 三维直线距离乘以每格单价，再加该传送类型的附加费。
+2. 跨世界时将结果乘以 `cross-dimension-multiplier`。
+3. 先应用 `minimum` 下限，再应用大于零的 `maximum` 上限。
+4. 四舍五入至两位小数。
 
----
+跨世界距离直接使用两处坐标计算，不换算地狱与主世界的坐标比例。默认单价下，同世界 500 格为 25 金币；跨世界坐标距离 300 格为 45 金币。
 
-## 💰 计费公式
+## 配置
 
-```
-费用 = max(min(距离 × 每格单价 + 额外附加, 最高上限), 最低费用)
-                          ↑ 若跨维度，整体 × cross-dimension-multiplier
-```
-
-**示例**（默认配置）：
-- 主世界传送 500 格：`500 × 0.05 = 25 金币`
-- 主世界 → 地狱 300 格：`300 × 0.05 × 3 = 45 金币`
-
----
-
-## 🔧 配置说明
+完整消息与选项见 [config.yml](src/main/resources/config.yml)。
 
 ```yaml
 cost:
-  per-block: 0.05          # 每格单价
-  cross-dimension-multiplier: 3.0  # 跨维度倍率
-  minimum: 1.0             # 最低收费
-  maximum: 500.0           # 最高上限（0=不限）
+  per-block: 0.05
+  cross-dimension-multiplier: 3.0
+  minimum: 1.0
+  maximum: 500.0
+  extra-coord: 0.0
+  extra-home: 0.0
+  extra-player: 0.0
+
+timeout:
+  request-expire: 30
 
 teleport:
-  delay: 3                 # 传送延迟（秒）
-  cancel-on-move: true     # 移动取消并退款
+  delay: 3
+  cancel-on-move: true
 
 home:
-  provider: essentials     # essentials / builtin
+  provider: essentials
 ```
 
----
+`maximum: 0` 表示不限制最高费用，`delay: 0` 表示立即传送。坐标和 Home 传送在等待前扣费；玩家互传在对方同意后扣费。
 
-## 🔧 开发环境
+## Home 数据
 
-- **Java:** 11+
-- **Build:** Maven 3.8+
-- **API:** Spigot / Paper API 1.16.5
-- **测试服务端:** Paper 1.16.5 / Arclight 1.16.5
+- `essentials`：读取 Essentials 已有的 Home；未找到 Essentials 时回退到 `builtin`。
+- `builtin`：读取 `plugins/ShuguangTP/homes.yml`。一级键为玩家 UUID，二级键为 Home 名，位置包含 `world`、`x`、`y`、`z`、`yaw`、`pitch`。
+- 本插件没有 `/sethome`、`/delhome` 命令；内置模式的数据需由文件或调用对应提供者方法维护。
 
----
+运行时 Home 数据含玩家标识与坐标，不属于源码；发布仓库时不要上传服务器数据目录。
 
-## 🤝 贡献
+## 致谢与许可
 
-欢迎 Issue / PR！
+感谢落尽红樱君不见委托定制开发。
 
-1. Fork 本仓库
-2. 创建新分支: `git checkout -b feature/awesome`
-3. 提交更改: `git commit -m "Add awesome feature"`
-4. 推送分支: `git push origin feature/awesome`
-5. 发起 Pull Request
-
----
-
-## 💝 致谢
-
-本插件由 [**落尽红樱君不见**](https://github.com/aojiangQAQ) 委托定制开发，感谢他愿意将此插件以开源形式发布，让更多服务器玩家受益。
-
----
-
-## ⚖️ License
-
-ShuguangTP 使用 **MIT License**，详见 [LICENSE](LICENSE)。
-
----
-
-> **制作团队**：曙光团队
-> **制作人**：鳌江
-> **适用服务端**：Paper / Arclight 1.16.5
+采用 [MIT License](LICENSE)。问题反馈与修改建议通过本仓库的 Issues 或 Pull Requests 提交。
